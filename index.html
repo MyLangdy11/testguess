@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ល្បងប្រាជ្ញា ទស្សន៍ទាយអត្ថន័យរូបភាព</title>
+  <style>
+    @font-face {
+      font-family: BaphnomS1;
+      src: url("font/Kh\ Baphnom\ Limon\ S1.ttf") format("truetype");
+      /* Replace "KhmerFont.ttf" with the actual font file name and path */
+    }
+
+    @font-face {
+      font-family: ChittBous;
+      src: url("font/Kh\ Ang\ ChittBous.ttf") format("truetype");
+    }
+
+    @font-face {
+      font-family: Koulen;
+      src: url("font/Koulen.ttf") format("truetype");
+    }
+
+    body {
+      background-color: #f2f2f2;
+      font-family: BaphnomS1;
+      text-align: center;
+      overflow: auto;
+    }
+
+    .logoIMG {
+      width: 80%;
+      height: 120px;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    #game-container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    #score {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    #timer {
+      font-size: 18px;
+      margin-top: 10px;
+    }
+
+    #images-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      /* Center the images horizontally */
+      align-items: center;
+      /* Center the images vertically */
+    }
+
+    .image-wrapper {
+      width: 50%;
+      padding: 5px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    #images-container img {
+      max-width: 100%;
+      /* Adjust the image width to fit the container */
+      height: 200px;
+      margin-bottom: 10px;
+      max-height: 150px;
+    }
+
+    #guess-input {
+      margin-top: 20px;
+      width: 100%;
+      padding: 10px;
+      box-sizing: border-box;
+      font-size: 16px;
+      text-align: center;
+    }
+
+    #result {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    #finish {
+      margin-top: 20px;
+    }
+
+    #summary {
+      margin-top: 20px;
+      font-size: 18px;
+      text-align: left;
+      display: none;
+    }
+
+    #summary p {
+      margin: 5px 0;
+    }
+
+    #new-game {
+      margin-top: 20px;
+      display: none;
+    }
+
+    /* Input text */
+    .input-container {
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    .input-container input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      background-color: #f2f2f2;
+      color: #333333;
+      outline: none;
+    }
+
+    .input-container input[type="text"]:focus {
+      background-color: #ffffff;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .input-container label {
+      position: absolute;
+      top: 50%;
+      left: 10px;
+      transform: translateY(-50%);
+      font-size: 14px;
+      color: #666666;
+      pointer-events: none;
+      transition: all 0.3s ease;
+      font-family: Koulen;
+    }
+
+    .input-container input[type="text"]:focus+label,
+    .input-container input[type="text"]:not(:placeholder-shown)+label {
+      top: 0;
+      transform: translateY(-50%);
+      font-size: 12px;
+      color: #ff6600;
+    }
+
+    #guess-input {
+      font-size: 30px;
+      font-family: BaphnomS1;
+    }
+
+    /* Submit button & New Play */
+    .submit-button {
+      display: inline-block;
+      padding: 10px 20px;
+      font-size: 16px;
+      font-weight: bold;
+      text-align: center;
+      text-decoration: none;
+      color: #ffffff;
+      background-color: #ff6600;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .submit-button:hover {
+      background-color: #cc5500;
+    }
+
+    .newGame {
+      display: inline-block;
+      padding: 10px 20px;
+      font-size: 16px;
+      font-weight: bold;
+      text-align: center;
+      text-decoration: none;
+      color: #ffffff;
+      background-color: #00ff95;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .newGame:hover {
+      background-color: #07c676;
+    }
+
+    @media (max-width: 480px) {
+      .submit-button {
+        display: block;
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="game-container">
+    <!-- <h1>ល្បងប្រាជ្ញាទាយអត្ថន័យរូបភាព</h1> -->
+    <img src="IconLogo.png" class="logoIMG" alt="ល្បែងទាយអត្ថន័យរូបភាព">
+    <div id="score">ពិន្ទុ: <span id="score-value">0</span></div>
+    <div id="timer">ថេរវេលានៅសល់: <span id="timer-value">60</span> វិនាទី</div>
+    <div id="images-container"></div>
+    <div class="input-container">
+      <input type="text" id="guess-input" placeholder=" ">
+      <label for="my-input">វាយបញ្ចូលចម្លើយទីនេះ</label>
+    </div>
+
+    <div id="result"></div>
+    <button id="finish" class="submit-button" onclick="checkGuess()">Submit</button>
+
+    <div id="summary"></div>
+    <button id="new-game" ​ class="newGame" onclick="startNewGame()">Play New Game</button>
+  </div>
+
+  <script>
+    // Array of questions and answers
+    var questions = [
+      {
+        images: ['https://i5.walmartimages.com/asr/9ecd0b10-f035-45ab-bcad-de94b91ee823.dbf259cc76ccb3b1cea8f105305f0ffe.jpeg?odnHeight=768&odnWidth=768&odnBg=FFFFFF', 'https://womensfitness.co.uk/wp-content/uploads/sites/3/2020/05/shutterstock_167438177.jpg?w=900', 'https://static.vecteezy.com/system/resources/previews/001/762/382/original/opposite-adjective-words-with-long-pencil-and-short-pencil-on-white-background-free-vector.jpg'],
+        answer: 'ខោជើងខ្លី'
+      },
+      {
+        images: ['https://us03-imgcdn.ymcart.com/69702/2022/08/12/b/c/bc7ddfb0df27f819.jpg?x-oss-process=image/quality,Q_90/auto-orient,1/resize,m_lfit,w_700,h_1000', 'https://m.postkhmer.com/sites/default/files/styles/content_pic/public/JOOMLA_IMPORT/images/stories/news/national_pk/2011/110121/110121_8.jpg?itok=N9P8j9gg', 'https://www.health.com.kh/wp-content/uploads/2018/09/11-4-27.jpg'],
+        answer: 'ពងទាកូន'
+      },
+      {
+        images: ['https://m.media-amazon.com/images/I/71Af8hPhDAL.jpg', 'https://cdn-icons-png.flaticon.com/512/5222/5222567.png', 'https://www.realsimple.com/thmb/4Uxr_CKC7aR-UhEicIvVqLaiO0k=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/GettyImages-488636063-5ab2dbd8a8ff48049cfd36e8ad841ae5.jpg'],
+        answer: 'កុំព្យូទ័រមួយទឹក'
+      },
+      {
+        images: ['https://www.manulife.com.kh/km/insights/possible-risks-for-those-who-drink-less-water-per-day/_jcr_content/root/responsivegrid_641029165/responsivegrid_62007/responsivegrid_1872166159/image_copy.coreimg.82.1100.jpeg/1635139165445/manulife-cambodia---%E1%9E%8F%E1%9E%BE%E1%9E%A0%E1%9E%B6%E1%9E%93%E1%9E%B7%E1%9E%97%E1%9F%90%E1%9E%99%E1%9E%A2%E1%9F%92%E1%9E%9C%E1%9E%B8%E1%9E%81%E1%9F%92%E1%9E%9B%E1%9F%87%E1%9E%8A%E1%9F%82%E1%9E%9B%E1%9E%A2%E1%9E%B6%E1%9E%85%E1%9E%80%E1%9E%BE%E1%9E%8F%E1%9E%98%E1%9E%B6%E1%9E%93%E1%9E%85%E1%9F%86%E1%9E%96%E1%9F%84%E1%9F%87%E1%9E%A2%E1%9F%92%E1%9E%93%E1%9E%80%E1%9E%8A%E1%9F%82%E1%9E%9B%E1%9E%95%E1%9E%B9%E1%9E%80%E1%9E%91%E1%9E%B9%E1%9E%80%E1%9E%8F%E1%9E%B7%E1%9E%85%E1%9E%87%E1%9E%B6%E1%9E%84-%E1%9F%A2,%E1%9F%A5-%E1%9E%9B%E1%9E%B8%E1%9E%8F%E1%9F%92%E1%9E%9A%E1%9E%80%E1%9F%92%E1%9E%93%E1%9E%BB%E1%9E%84%E1%9E%98%E1%9E%BD%E1%9E%99%E1%9E%90%E1%9F%92%E1%9E%84%E1%9F%83---02.jpeg', 'https://5000-years.org/images/articles/1246/Untitled-1-Recovered.jpg', 'https://www.yosothor.org/uploads/images/Gallery/Chapter-VI/Chapter-6-23/fig.jpg'],
+        answer: 'ទឹកត្រចៀកកាំ'
+      },
+      {
+        images: ['https://phsar99.com/cdn/shop/products/4blVg2Y66m_1800x1800.jpg?v=1660458963', 'https://www.health.com.kh/wp-content/uploads/2020/01/4.jpg', 'https://greensarat.files.wordpress.com/2017/06/sdwerwereq.jpg?w=356&h=534'],
+        answer: 'ខោទឹកនោម'
+      },
+      {
+        images: ['https://i-cf65.ch-static.com/content/dam/cf-consumer-healthcare/panadol-reborn/km_KH/km-kh-images/780x640/shutterstock_631434704_780x640.png?auto=format', 'https://asset3e.ams.com.kh/cdn-cgi/imagedelivery/tuHueqswQqac5hoQ41sK8g/3c027143-8e28-4c0e-278c-948932f30d00/w=990', 'https://i.ytimg.com/vi/mfeVYsI9vCE/maxresdefault.jpg', 'https://s6.kh1.co/54/542283a37e4ede4e39505875688e25610299eed9.jpg'],
+        answer: 'ឈឺមុខរបួស'
+      },
+      {
+        images: ['https://khmernote.com.kh/wp-content/uploads/2022/06/824308BB-257D-4558-BB8E-663688D93591.jpeg', 'https://1.bp.blogspot.com/-GhnwXSvgWN0/YKcoRWexKqI/AAAAAAAAqA8/cTGrC55VkoA-rVzFFasRbXesUPaFKANZQCNcBGAsYHQ/s0/e04563d7e0cceba6d22ee368d83b56bd.jpg', 'https://m.postkhmer.com/sites/default/files/field/image/af-e3.jpg', 'https://i0.wp.com/babyandmom.news/wp-content/uploads/2018/01/1baby-and-mom-food-29-01-2018.jpg?fit=600%2C400&ssl=1'],
+        answer: 'មីឆុងមីកំប៉ុងមីឆា'
+      },
+      {
+        images: ['https://5000-years.org/images/articles/2003/Untitled-1-Recovered.jpg', 'https://cdn-icons-png.flaticon.com/512/4552/4552989.png'],
+        answer: 'តាខេ'
+      },
+
+      // Add more questions here...
+    ];
+
+    var currentQuestionIndex = 0;
+    var score = 0;
+    var timer;
+    var timeLeft = 60;
+
+    // Shuffle the questions array
+    questions.sort(function () {
+      return 0.5 - Math.random();
+    });
+
+    // Display the current question
+    function displayQuestion() {
+      var question = questions[currentQuestionIndex];
+      var imagesContainer = document.getElementById('images-container');
+      imagesContainer.innerHTML = '';
+
+      // Display images
+      for (var i = 0; i < question.images.length; i++) {
+        var imageWrapper = document.createElement('div');
+        imageWrapper.className = 'image-wrapper';
+        var image = document.createElement('img');
+        image.src = question.images[i];
+        imageWrapper.appendChild(image);
+        imagesContainer.appendChild(imageWrapper);
+      }
+    }
+
+    // Start the timer
+    function startTimer() {
+      timeLeft = 60;
+      document.getElementById('timer-value').textContent = timeLeft;
+
+      clearInterval(timer);
+
+      timer = setInterval(function () {
+        timeLeft--;
+        document.getElementById('timer-value').textContent = timeLeft;
+
+        if (timeLeft === 0) {
+          clearInterval(timer);
+          showResult(false);
+        }
+      }, 1000);
+    }
+
+    // Check if the guess is correct
+    function checkGuess() {
+      clearInterval(timer);
+      var guessInput = document.getElementById('guess-input');
+      var guess = guessInput.value.trim();
+      var question = questions[currentQuestionIndex];
+
+      if (guess === question.answer) {
+        score++;
+        document.getElementById('score-value').textContent = score;
+
+        showResult(true);
+      } else {
+        showResult(false);
+      }
+    }
+
+    // Show the result (correct or incorrect)
+    function showResult(isCorrect) {
+      var result = document.getElementById('result');
+      var guessInput = document.getElementById('guess-input');
+      var question = questions[currentQuestionIndex];
+
+      if (isCorrect) {
+        result.textContent = 'ពូកែមែនទែន!';
+        result.style.color = 'green';
+        document.getElementById('right-answer-sound').play();
+      } else {
+        result.textContent = 'ហិកហិក! ចម្លើយត្រឹមត្រូវគឺ: ' + question.answer;
+        result.style.color = 'red';
+        document.getElementById('wrong-answer-sound').play();
+      }
+
+      setTimeout(function () {
+        result.textContent = '';
+        result.style.color = '';
+        guessInput.disabled = false;
+        document.getElementById('finish').disabled = false;
+        currentQuestionIndex++;
+        if (currentQuestionIndex < questions.length) {
+          displayQuestion();
+          startTimer();
+        } else {
+          showSummary();
+        }
+        guessInput.value = '';
+      }, isCorrect ? 2000 : 5000);
+
+      guessInput.disabled = true;
+      document.getElementById('finish').disabled = true;
+    }
+
+    // Show the game summary
+    function showSummary() {
+      var summary = document.getElementById('summary');
+      var newGameButton = document.getElementById('new-game');
+
+      summary.style.display = 'block';
+      newGameButton.style.display = 'block';
+
+      summary.innerHTML = '<p>ពិន្ទុសរុប: ' + score + '</p>' +
+        '<p>ឆ្លើយត្រូវចំនួន: ' + score + '</p>' +
+        '<p>ឆ្លើយខុសចំនួន: ' + (questions.length - score) + '</p>';
+    }
+
+    // Start a new game
+    function startNewGame() {
+      currentQuestionIndex = 0;
+      score = 0;
+      timeLeft = 60;
+      document.getElementById('score-value').textContent = score;
+      document.getElementById('timer-value').textContent = timeLeft;
+      document.getElementById('summary').style.display = 'none';
+      document.getElementById('new-game').style.display = 'none';
+      displayQuestion();
+      startTimer();
+    }
+
+    // Initialize the game
+    displayQuestion();
+    startTimer();
+  </script>
+  <audio id="right-answer-sound" src="sound/correct.mp3"></audio>
+  <audio id="wrong-answer-sound" src="sound/incorrect.mp3"></audio>
+</body>
+
+</html>
